@@ -95,12 +95,12 @@ tq_get_options()
 ```
 
 ```{r}
-my_dataframe <- data.frame()
+my_dataframe <- "pounds"
 ```
 
 
 ```{r}
-tq_get(my_dataframe, get = "quandl", complete_cases = TRUE)
+tq_get(, get = "quandl", complete_cases = TRUE)
 ```
 
 
