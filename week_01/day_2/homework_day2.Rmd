@@ -1,0 +1,109 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Part 1
+
+```{r}
+stock_prices <- c(23, 27, 23, 21, 34, 24, 25, 30, 37, 30)
+day_of_week <- rep(c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"), times =2)
+
+```
+
+```{r}
+day_of_week_factor <- factor(day_of_week)
+```
+
+```{r}
+named_stock_prices <- names(stock_prices) 
+named_stock_prices
+```
+
+```{r}
+stock_data <- data.frame(stock_prices, day_of_week)
+```
+
+```{r}
+View(stock_data)
+```
+
+```{r}
+stock_list <- list(stock_p = stock_prices, dow = day_of_week, stock_d = stock_data)
+stock_list
+```
+
+Part 2
+
+Question 1
+
+```{r}
+stock_prices[c(4, 5, 6)]
+```
+
+```{r}
+stock_prices[stock_prices > 30]
+```
+
+Question 2
+
+```{r}
+stock_data$day_of_week
+```
+
+```{r}
+subset(stock_data, stock_prices < 25)
+```
+
+
+```{r}
+stock_data[ ,1]
+```
+
+stock
+```{r}
+stock_data[3, ]
+```
+
+```{r}
+stock_data[3, 1]
+```
+
+Question 4
+
+```{r}
+stock_list$stock_d
+```
+
+Extension
+
+```{r}
+install.packages("tidyquant")
+```
+
+
+```{r}
+library(tidyquant)
+```
+
+```{r}
+help("tidyquant")
+```
+
+```{r}
+tq_get_options()
+```
+
+```{r}
+my_dataframe <- data.frame()
+```
+
+
+```{r}
+tq_get(my_dataframe, get = "quandl", complete_cases = TRUE)
+```
+
+
+
+
+
