@@ -1,0 +1,106 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+install.packages("styler")
+install.packages('devtools')
+devtools::install_github('codeclan/CodeClanData')
+library(CodeClanData)
+```
+
+Beer dataset
+
+```{r}
+beer_dataset <- CodeClanData::beer
+beer_dataset
+```
+
+```{r}
+str(beer_dataset)
+```
+
+Mean of both calories and percentage of alcohol.
+
+```{r}
+percent_mean <- mean(beer_dataset[ , 3])
+calories_mean <- mean(as.numeric(beer_dataset[ , 4]))
+#needed to change calories to numeric
+percent_mean
+calories_mean
+```
+ 
+Strong beer low cals
+ 
+```{r}
+subset(beer_dataset, percent > percent_mean & calories < calories_mean)
+```
+
+Temprature matrix
+
+```{r}
+temp_matrix <- CodeClanData::temp
+head(temp_matrix)
+```
+
+```{r}
+str(temp_matrix)
+```
+
+```{r}
+colMeans(temp_matrix)
+```
+
+Coldest to hottest mounth
+
+```{r}
+sort(colMeans(temp_matrix))
+```
+
+
+```{r}
+temp_row_mean <- rowMeans(temp_matrix)
+```
+
+Coldest and Hottest years
+
+```{r}
+max(temp_row_mean)
+min(temp_row_mean)
+```
+
+```{r}
+got_list <- CodeClanData::game_of_thrones
+str(got_list)
+```
+
+```{r}
+got_characters <- got_list$characters
+got_dataframe <- as.data.frame(got_characters)
+got_dataframe
+```
+
+
+```{r}
+length(subset(got_dataframe, got_dataframe == "Male"))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

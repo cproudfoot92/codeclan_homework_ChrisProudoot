@@ -1,0 +1,179 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+install.packages("styler")
+```
+
+```{r}
+install.packages("fcuk")
+library(fcuk)
+```
+2 Vectors
+2.1 Making Vectors
+
+```{r}
+temprature <- c(13, 17, 16, 17, 16)
+chance_of_rain <- c(95, 7, 91, 33, 40)
+cloud_cover <- c("cloudy", "cloudy", "cloudy", "cloudy", "sunny_intervals")
+days_of_week <- c("Wednesday", "Thursday", "Friday", "Satarday", "Sunday")
+```
+
+2.2 Naming Vectors
+
+```{r}
+named_temprature <- temprature
+names(named_temprature) <- days_of_week
+
+named_chance_of_rain <- chance_of_rain
+names(named_chance_of_rain) <- days_of_week
+
+named_cloud_cover <- cloud_cover
+names(named_cloud_cover) <- days_of_week
+
+named_temprature
+named_chance_of_rain
+named_cloud_cover
+```
+
+2.3 Means
+
+```{r}
+mean_temp <- mean(temprature)
+mean_rain <- mean(chance_of_rain)
+mean_rain
+mean_temp
+```
+
+2.4 Selecting vectors
+
+```{r}
+subset(temprature, temprature > mean_temp)
+```
+
+```{r}
+subset(temprature, chance_of_rain <= mean_rain)
+
+```
+
+```{r}
+named_cloud_cover[c("Satarday", "Sunday")]
+```
+
+2.5 Putting it together - spelling test
+
+```{r}
+test_results <- c(6, 7, 9, 7, 9, 3, 9, 7, 3, 8, 10, 5, 5, 9, 7, 5, 9, 8, 9, 5)
+```
+
+```{r}
+length(test_results)
+```
+
+```{r}
+mean(test_results)
+```
+
+```{r}
+sort(test_results)[c(1,length(test_results))]
+```
+
+```{r}
+table(test_results)
+```
+
+```{r}
+test_results * 10
+```
+
+```{r}
+length(subset(test_results, test_results >= 8))
+```
+
+3 Matrices
+3.1 Creating a matrix
+
+```{r}
+weather_matrix <- matrix(c(16, 16, 17, 16, 16, 15, 16, 17, 18, 17, 18, 18, 19, 18), 2, 7)
+days <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Satarday", "Sunday")
+weeks <- c("Week_1", "Week_2")
+```
+
+```{r}
+colnames(weather_matrix) <- days
+rownames(weather_matrix) <- weeks
+```
+
+```{r}
+weather_matrix
+```
+
+```{r}
+rowMeans(weather_matrix)
+```
+
+```{r}
+
+colMeans(weather_matrix)
+```
+
+```{r}
+weather_matrix[2, 3]
+```
+
+```{r}
+weather_matrix[2, ]
+```
+
+```{r}
+weather_matrix[, 3]
+```
+
+```{r}
+weather_matrix * 1.8 + 32
+```
+
+```{r}
+as.factor(days_of_week)
+```
+????????????
+
+```{r}
+weather_df <- data.frame(temprature, chance_of_rain, cloud_cover, days_of_week)
+weather_df
+```
+
+```{r}
+rm(temprature, chance_of_rain, cloud_cover, days_of_week)
+```
+
+```{r}
+subset(weather_df, temprature > mean_temp)
+```
+
+```{r}
+subset(weather_df, chance_of_rain <= mean_rain)
+```
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
