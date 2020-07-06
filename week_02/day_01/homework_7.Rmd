@@ -1,0 +1,101 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(readr)
+```
+
+```{r}
+read_csv("data/state_income_data.csv")
+```
+
+```{r}
+read_csv("data/state_income_data.csv",
+         col_names = c(
+           "Index",
+           "State",
+           2002:2015
+         ))
+```
+
+```{r}
+read_csv("data/cars.csv", col_types = cols(
+  X1 = col_character(),
+  mpg = col_double(),
+  cyl = col_double(),
+  disp = col_double(),
+  hp = col_double(),
+  vs = col_logical()
+ )
+)
+```
+
+
+```{r}
+scotland <- read_delim("data/scotland.txt", delim = ";", skip = 1)
+scotland
+```
+
+```{r}
+read_lines()
+```
+
+```{r}
+read_csv("data/steam-200k-sample.csv", skip = 4)
+```
+
+```{r}
+read_tsv("data/historic_eu_payments.tsv")
+```
+
+```{r}
+read_table()
+```
+
+```{r}
+library(jsonlite)
+```
+
+```{r}
+raw_make_mean <- read_file("http://makemeanalyst.com/wp-content/uploads/2017/06/sample_json.txt")
+raw_make_mean
+```
+
+```{r}
+make_mean <- parse_json(raw_make_mean)
+make_mean
+```
+
+```{r}
+make_mean_df <- fromJSON(raw_make_mean)
+make_mean_df
+```
+
+```{r}
+fromJSON("http://makemeanalyst.com/wp-content/uploads/2017/06/sample_json.txt")
+```
+
+
+```{r}
+as.data.frame(unlist(make_mean), colnames(c("Emp Id", "Name", "Dept")))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

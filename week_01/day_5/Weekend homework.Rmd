@@ -86,16 +86,21 @@ for (item in my_list) {
 
 2.4.2
 ```{r}
-for (item in my_list) {
-  if(class(item) == "character" &
-     length(item) > 1){
-    pasted <- paste(item)
-    print(pasted)
+for (item in 1:(my_list)) {
+  pasted <- my_list[[item]]
+  if(class(my_list[[item]]) == "character"){
+    if(length(my_list[[item]] > 1)){
+      pasted <- paste(my_list[[item]])
+      }
+    print(item)
   }
 }
-
 ```
 
+
+```{r}
+?paste
+```
 
 
 

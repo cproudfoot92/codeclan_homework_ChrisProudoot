@@ -1882,24 +1882,32 @@ dplyr::case_when(
 <p>2.4.2</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yIChpdGVtIGluIG15X2xpc3QpIHtcbiAgaWYoY2xhc3MoaXRlbSkgPT0gXCJjaGFyYWN0ZXJcIiAmXG4gICAgIGxlbmd0aChpdGVtKSA+IDEpe1xuICAgIHBhc3RlZCA8LSBwYXN0ZShpdGVtKVxuICAgIHByaW50KHBhc3RlZClcbiAgfVxufVxuYGBgIn0= -->
-<pre class="r"><code>for (item in my_list) {
-  if(class(item) == &quot;character&quot; &amp;
-     length(item) &gt; 1){
-    pasted &lt;- paste(item)
-    print(pasted)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yIChpdGVtIGluIDE6KG15X2xpc3QpKSB7XG4gIHBhc3RlZCA8LSBteV9saXN0W1tpdGVtXV1cbiAgaWYoY2xhc3MobXlfbGlzdFtbaXRlbV1dKSA9PSBcImNoYXJhY3RlclwiKXtcbiAgICBpZihsZW5ndGgobXlfbGlzdFtbaXRlbV1dID4gMSkpe1xuICAgICAgcGFzdGVkIDwtIHBhc3RlKG15X2xpc3RbW2l0ZW1dXSlcbiAgICAgIH1cbiAgICBwcmludChpdGVtKVxuICB9XG59XG5gYGAifQ== -->
+<pre class="r"><code>for (item in 1:(my_list)) {
+  pasted &lt;- my_list[[item]]
+  if(class(my_list[[item]]) == &quot;character&quot;){
+    if(length(my_list[[item]] &gt; 1)){
+      pasted &lt;- paste(my_list[[item]])
+      }
+    print(item)
   }
 }</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiaXNcIiAgICBcImFuXCIgICAgXCJhcHBsZVwiXG5bMV0gXCJpXCIgICAgICBcImxpa2VcIiAgIFwiYXBwbGVzXCJcbiJ9 -->
-<pre><code>[1] &quot;is&quot;    &quot;an&quot;    &quot;apple&quot;
-[1] &quot;i&quot;      &quot;like&quot;   &quot;apples&quot;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoibnVtZXJpY2FsIGV4cHJlc3Npb24gaGFzIDcgZWxlbWVudHM6IG9ubHkgdGhlIGZpcnN0IHVzZWRFcnJvciBpbiAxOihteV9saXN0KSA6IE5BL05hTiBhcmd1bWVudFxuIn0= -->
+<pre><code>numerical expression has 7 elements: only the first usedError in 1:(my_list) : NA/NaN argument</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuP3Bhc3RlXG5gYGAifQ== -->
+<pre class="r"><code>?paste</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoyLjIuMQpgYGB7cn0KeCA8LSAyCgppZih4KXsKICBwcmludCh4ICogMTUgKyA0KQp9CmBgYAoKMi4yLjIKYGBge3J9CmJpcmQgPC0gIjUiCgppZihiaXJkID09ICJnb29zZSIgfAogICBiaXJkID09ICJkdWNrIiB8CiAgIGJpcmQgPT0gIiBwaWdlb24iKXsKICBwcmludCgiYmlyZCIpCn1lbHNlewogIHByaW50KCJub3QgYSBiaXJkIikKfQpgYGAKCjIuMi4zCmBgYHtyfQp5IDwtICJkIgoKaWYoY2xhc3MoeSkgIT0gIm51bWVyaWMiKXsKICBwcmludCgiSW52YWxpZCBpbnB1dCIpCn1lbHNlewogIHByaW50KHkgKiAxMCkKfQpgYGAKCjIuMy4xCmBgYHtyfQpzaXplcyA8LSBjKDEzLCAxNSwgMTAsIDgsIDIyKQoKaWZlbHNlKHNpemVzID4gMTAsICJCaWciLCAiU21hbGwiKQpgYGAKCjIuMy4yCmBgYHtyfQpmcnVpdCA8LSBjKCJhcHBsZSIsICJhcHBsZSIsICJiYW5hbmEiLCAiY2hlcnJ5IiwgImNoZXJyeSIpCgpkcGx5cjo6cmVjb2RlKGZydWl0LCAiYXBwbGUiID0gImFscGFjYSIsICJiYW5hbmEiID0gImJvbm9ibyIsICJjaGVycnkiID0gImNoaXBtdW5rIikKCmBgYAoKMi4zLjMKYGBge3J9CndpZmVfYWdlIDwtIGMoMjlMLCAzMEwsIDM2TCwgMzFMLCAyMkwpCmh1c2JhbmRfYWdlIDwtIGMoMjhMLCAzNUwsIDMyTCwgMzFMLCAyOUwpCgpkcGx5cjo6Y2FzZV93aGVuKAogIHdpZmVfYWdlID4gaHVzYmFuZF9hZ2UgfiAiV2lmZSBvbGRlciIsCiAgd2lmZV9hZ2UgPCBodXNiYW5kX2FnZSB+ICJIdXNiYW5kIG9sZGVyIiwKICB3aWZlX2FnZSA9PSBodXNiYW5kX2FnZSB+ICJTYW1lIGFnZSIKKQoKYGBgCgoyLjQuMQpgYGB7cn0KbXlfbGlzdCA8LSBsaXN0KAogIDQsCiAgImFwcGxlIiwKICAxMC41LAogIGMoImlzIiwgImFuIiwgImFwcGxlIiksCiAgImFwcGxlIiwKICBjKCJpIiwgImxpa2UiLCAiYXBwbGVzIiksCiAgOAopCmBgYAoKYGBge3J9CmZvciAoaXRlbSBpbiBteV9saXN0KSB7CiAgaWYoY2xhc3MoaXRlbSkgPT0gImNoYXJhY3RlciIpewogICAgcHJpbnQoaXRlbSkKICB9Cn0KYGBgCgoyLjQuMgpgYGB7cn0KZm9yIChpdGVtIGluIG15X2xpc3QpIHsKICBpZihjbGFzcyhpdGVtKSA9PSAiY2hhcmFjdGVyIiAmCiAgICAgbGVuZ3RoKGl0ZW0pID4gMSl7CiAgICBwYXN0ZWQgPC0gcGFzdGUoaXRlbSkKICAgIHByaW50KHBhc3RlZCkKICB9Cn0KCmBgYAoKCgoKCgoKCgoKCgoKCgoKCgoKCgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoyLjIuMQpgYGB7cn0KeCA8LSAyCgppZih4KXsKICBwcmludCh4ICogMTUgKyA0KQp9CmBgYAoKMi4yLjIKYGBge3J9CmJpcmQgPC0gIjUiCgppZihiaXJkID09ICJnb29zZSIgfAogICBiaXJkID09ICJkdWNrIiB8CiAgIGJpcmQgPT0gIiBwaWdlb24iKXsKICBwcmludCgiYmlyZCIpCn1lbHNlewogIHByaW50KCJub3QgYSBiaXJkIikKfQpgYGAKCjIuMi4zCmBgYHtyfQp5IDwtICJkIgoKaWYoY2xhc3MoeSkgIT0gIm51bWVyaWMiKXsKICBwcmludCgiSW52YWxpZCBpbnB1dCIpCn1lbHNlewogIHByaW50KHkgKiAxMCkKfQpgYGAKCjIuMy4xCmBgYHtyfQpzaXplcyA8LSBjKDEzLCAxNSwgMTAsIDgsIDIyKQoKaWZlbHNlKHNpemVzID4gMTAsICJCaWciLCAiU21hbGwiKQpgYGAKCjIuMy4yCmBgYHtyfQpmcnVpdCA8LSBjKCJhcHBsZSIsICJhcHBsZSIsICJiYW5hbmEiLCAiY2hlcnJ5IiwgImNoZXJyeSIpCgpkcGx5cjo6cmVjb2RlKGZydWl0LCAiYXBwbGUiID0gImFscGFjYSIsICJiYW5hbmEiID0gImJvbm9ibyIsICJjaGVycnkiID0gImNoaXBtdW5rIikKCmBgYAoKMi4zLjMKYGBge3J9CndpZmVfYWdlIDwtIGMoMjlMLCAzMEwsIDM2TCwgMzFMLCAyMkwpCmh1c2JhbmRfYWdlIDwtIGMoMjhMLCAzNUwsIDMyTCwgMzFMLCAyOUwpCgpkcGx5cjo6Y2FzZV93aGVuKAogIHdpZmVfYWdlID4gaHVzYmFuZF9hZ2UgfiAiV2lmZSBvbGRlciIsCiAgd2lmZV9hZ2UgPCBodXNiYW5kX2FnZSB+ICJIdXNiYW5kIG9sZGVyIiwKICB3aWZlX2FnZSA9PSBodXNiYW5kX2FnZSB+ICJTYW1lIGFnZSIKKQoKYGBgCgoyLjQuMQpgYGB7cn0KbXlfbGlzdCA8LSBsaXN0KAogIDQsCiAgImFwcGxlIiwKICAxMC41LAogIGMoImlzIiwgImFuIiwgImFwcGxlIiksCiAgImFwcGxlIiwKICBjKCJpIiwgImxpa2UiLCAiYXBwbGVzIiksCiAgOAopCmBgYAoKYGBge3J9CmZvciAoaXRlbSBpbiBteV9saXN0KSB7CiAgaWYoY2xhc3MoaXRlbSkgPT0gImNoYXJhY3RlciIpewogICAgcHJpbnQoaXRlbSkKICB9Cn0KYGBgCgoyLjQuMgpgYGB7cn0KZm9yIChpdGVtIGluIDE6KG15X2xpc3QpKSB7CiAgcGFzdGVkIDwtIG15X2xpc3RbW2l0ZW1dXQogIGlmKGNsYXNzKG15X2xpc3RbW2l0ZW1dXSkgPT0gImNoYXJhY3RlciIpewogICAgaWYobGVuZ3RoKG15X2xpc3RbW2l0ZW1dXSA+IDEpKXsKICAgICAgcGFzdGVkIDwtIHBhc3RlKG15X2xpc3RbW2l0ZW1dXSkKICAgICAgfQogICAgcHJpbnQoaXRlbSkKICB9Cn0KYGBgCgoKYGBge3J9Cj9wYXN0ZQpgYGAKCgoKCgoKCgoKCgoKCgoKCgoKCgoK</div>
 
 
 
