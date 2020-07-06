@@ -1,0 +1,378 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+If statements.
+
+```{r}
+if(expression){
+  do something
+  do something else
+}
+```
+
+Boolean expression(TRUE/FALSE)
+
+```{r}
+if(weather == "sunny"){
+  hang_up_washing()
+}
+```
+
+```{r}
+if(10 < 15){
+  print("Yep 10 less than 15")
+}
+```
+
+```{r}
+if(5%in% c(1, 4, 8)){
+  print("5 is in (1, 4, 8")
+}
+```
+
+```{r}
+x <- 9
+y <- 7
+
+if(x > y){
+  print("x greater than y")
+}
+
+```
+
+```{r}
+if(x %% 2 == 0){
+  print("x is divisable by 2.")
+}  else{
+    print("x is not divisable by 2.")
+  }
+```
+
+```{r}
+if(10 != 5){
+  if(3 > 1){
+    print("hello")
+  }
+  print("goodbye")
+}
+```
+
+```{r}
+if(10 != 5){
+  if(2 <= 0){
+    print("Hello")
+  }
+  print("Goodbye")
+}
+```
+
+
+```{r}
+if(expression){
+  do something if expression TRUE
+}else{
+  do something if expression FALSE
+}
+```
+
+```{r}
+if(4 < 5){
+  print("kjdfsjkdh")
+}else{
+  print("No")
+}
+```
+
+```{r}
+x <- 201
+if(x %% 2 == 0){
+  print("x is divisable by 2.")
+}  else{
+    print("x is not divisable by 2.")
+  }
+```
+
+```{r}
+ifelse(1:10 <= 5, 0, 5)
+```
+
+```{r}
+ifelse(1:10 %% 2 == 0, "Even", "Odd")
+```
+```{r}
+animals <- c("Cat", "Dog", "Duck")
+ifelse(animals == "Dog", "is a dog", "not a dog")
+```
+
+```{r}
+
+ifelse(animals == "Duck", "Swan", animals)
+```
+
+```{r}
+x <- 1:10
+ifelse(x %% 3 == 0, "multiple of 3", "Not a multiple of 3")
+```
+
+```{r}
+y <- c("Sum", "Cloud", "Rain")
+ifelse(y == "Sum", "Sun", y)
+```
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+x <- 1:20
+case_when(
+  x %% 2 == 0 ~ "Even",
+  x %% 3 == 0 ~ "Dicisible by 3",
+  x %% 5 == 0 ~ "Divisible by 5",
+  TRUE ~ "Other number"
+)
+```
+```{r}
+animals <- c("Cat", "Dog", "Monkey", "Elephant", "Dog")
+```
+
+```{r}
+
+case_when(
+  animals == "Cat" ~ 4,
+  animals == "Dog" ~ 2,
+  animals == "Monkey" ~ 3,
+  amimals == "Elephant" ~ 6
+)
+```
+output elements must be the same
+
+```{r}
+x <- 1:20
+case_when(
+  x %% 2 == 0 ~ "Even",
+  x %% 3 == 0 ~ "Divisible by 3",
+  TRUE ~ as.character(x)
+)
+```
+
+```{r}
+numbers <- 1:100
+case_when(
+  numbers %% 3 == 0 & numbers %% 5 == 0 ~ "FizzBuzz",
+  numbers %% 3 == 0 ~ "Fizz", 
+  numbers %% 5 == 0 ~ "Buzz",
+  
+  TRUE ~ as.character(numbers)
+)
+```
+
+
+```{r}
+?case_when
+```
+
+```{r}
+x <- as.factor( c("green", "blue", "blue", "red", "purple"))
+
+ifelse(x == "green", "blue", x)
+```
+
+```{r}
+recode(x, "green" = "blue")
+```
+
+```{r}
+recode(x, "green" = "blue", "purple" = "black")
+```
+
+```{r}
+name <- c("John", "Clara", "Smith")
+sex <- c(1, 2, 1)
+age <- c(30, 32, 54)
+# create a new dataframe
+student_df <- data.frame(name, sex, age)
+student_df
+```
+
+```{r}
+student_df$sex <- recode(student_df$sex, "1" = "Male", "2" = "Female")
+student_df
+```
+
+```{r}
+x <- 1:10
+recode(x, "2" =20L, "4" = 40L)
+```
+
+```{r}
+for (item in collection) {
+  do somethung with item
+}
+```
+
+```{r}
+for (sock in basket) {
+  peg_to_line(sock)
+}
+```
+
+```{r}
+weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+
+for (day in weekdays) {
+  phrase <- paste("The day is", day)
+  print(phrase)
+}
+```
+
+```{r}
+numbers <- 1:5
+
+for (num in numbers) {
+  print(num)
+}
+```
+
+```{r}
+current_value <- 1
+stop_value <- 10
+
+while(current_value < stop_value){
+  current_value <- current_value + 1
+  print(current_value)
+}
+```
+
+```{r}
+my_vector <- c(1, 2, 3, 4, 5)
+my_vector + 1
+```
+
+```{r}
+my_matrix <- matrix(data = 1:10, nrow = 5, ncol = 6)
+sum_cols_matrix <- apply(X = my_matrix, MARGIN = 2, FUN = sum)
+sum_cols_matrix
+```
+
+FUNTIONS 
+
+```{r}
+sum(c(1, 2, 3))
+```
+```{r}
+abs(-2.3)
+```
+
+```{r}
+round(4.32134, digits = 3)
+round(123435, digits = -3)
+```
+
+```{r}
+floor(4.9)
+floor(2.6)
+```
+
+```{r}
+ceiling(3.2)
+ceiling(7.4)
+```
+
+```{r}
+paste("Hello", "my", "name", "is")
+paste0("1", "2", "3")
+```
+
+```{r}
+paste(letters)
+```
+
+```{r}
+paste(letters, collapse = " ")
+```
+
+```{r}
+sort(c(1, 4, 6, 3, 2, 9))
+sort(c(1, 4, 6, 3, 2, 9), decreasing = TRUE)
+```
+
+```{r}
+nchar("hello")
+```
+
+```{r}
+nchar(c("hello", "world"))
+```
+
+```{r}
+nchar("hello", "chars", TRUE, NA)
+```
+
+```{r}
+mutiply_by_five <- function(x){
+  return(x*5)
+}
+```
+
+```{r}
+mutiply_by_five(10)
+```
+
+```{r}
+multiply_by <- function(x, y = 5){
+  return(x * y)
+} #default 5
+```
+
+```{r}
+multiply_by(2, 5)
+```
+```{r}
+multiply_by(5)
+```
+
+```{r}
+make_price <- function(x){
+  paste0("£",round(x, digits = 2))
+  
+}
+```
+
+```{r}
+make_price(123)
+```
+
+```{r}
+triangle <- function(x){
+  (x * (x + 1)) / 2
+}  
+```
+
+```{r}
+triangle(4)
+```
+
+
+```{r}
+make_fancy_price <- function(x){
+  pounds <- x %/% 1 
+  pence <- (x %% 1) * 100
+  if(pence > 0){
+    paste(pounds, "pounds", pence, "pence")
+  }else{
+    paste(pounds, "pounds")
+  }
+  
+} 
+```
+
+```{r}
+make_fancy_price(8)
+```
+
+
+
+
+
