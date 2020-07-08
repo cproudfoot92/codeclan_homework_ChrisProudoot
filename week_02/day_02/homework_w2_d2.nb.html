@@ -1764,6 +1764,8 @@ source(credentials_location)</code></pre>
 <pre class="r"><code>library(RPostgreSQL)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGJfY29ubmVjdGlvbiA8LSBkYkNvbm5lY3QoZHJ2ID0gUG9zdGdyZVNRTChtYXguY29uID0gMiksIHVzZXIgPSBwb3N0Z3Jlc3FsX3VzZXJuYW1lLCBwYXNzd29yZCA9IHBvc3RncmVzcWxfcGFzc3dvcmQsIGRibmFtZSA9ICd3cmVzdGxpbmcnLCBob3N0ID0gJ2xvY2FsaG9zdCcpXG5gYGAifQ== -->
 <pre class="r"><code>db_connection &lt;- dbConnect(drv = PostgreSQL(max.con = 2), user = postgresql_username, password = postgresql_password, dbname = &#39;wrestling&#39;, host = &#39;localhost&#39;)</code></pre>
@@ -1800,14 +1802,18 @@ source(credentials_location)</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGJDb25uZWN0KGRydiA9IFBvc3RncmVTUUwobWF4LmNvbiA9IDEpLCB1c2VyID0gdXNlcm5hbWUsIHBhc3N3b3JkID0gcGFzc3dvcmQsIGRibmFtZT0nbXZoYmRnZGsnLCBob3N0PSdtYW5ueS5kYi5lbGVwaGFudHNxbC5jb20nKVxuYGBgIn0= -->
 <pre class="r"><code>dbConnect(drv = PostgreSQL(max.con = 1), user = username, password = password, dbname=&#39;mvhbdgdk&#39;, host=&#39;manny.db.elephantsql.com&#39;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiPFBvc3RncmVTUUxDb25uZWN0aW9uPlxuIn0= -->
-<pre><code>&lt;PostgreSQLConnection&gt;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gcG9zdGdyZXNxbE5ld0Nvbm5lY3Rpb24oZHJ2LCAuLi4pIDogXG4gIFJTLURCSSBkcml2ZXI6IChjb3VsZCBub3QgY29ubmVjdCBtdmhiZGdka0BtYW5ueS5kYi5lbGVwaGFudHNxbC5jb206NTQzMiBvbiBkYm5hbWUgXCJtdmhiZGdka1wiOiBzZXJ2ZXIgY2xvc2VkIHRoZSBjb25uZWN0aW9uIHVuZXhwZWN0ZWRseVxuXHRUaGlzIHByb2JhYmx5IG1lYW5zIHRoZSBzZXJ2ZXIgdGVybWluYXRlZCBhYm5vcm1hbGx5XG5cdGJlZm9yZSBvciB3aGlsZSBwcm9jZXNzaW5nIHRoZSByZXF1ZXN0LlxuKVxuIn0= -->
+<pre><code>Error in postgresqlNewConnection(drv, ...) : 
+  RS-DBI driver: (could not connect mvhbdgdk@manny.db.elephantsql.com:5432 on dbname &quot;mvhbdgdk&quot;: server closed the connection unexpectedly
+    This probably means the server terminated abnormally
+    before or while processing the request.
+)</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmhvbWVfbG9jYXRpb24gPC0gU3lzLmdldGVudigiSE9NRSIpCmNyZWRlbnRpYWxzX2xvY2F0aW9uIDwtIHBhc3RlMChob21lX2xvY2F0aW9uLCIvY3JlZGVudGlhbHMuUiIpCnNvdXJjZShjcmVkZW50aWFsc19sb2NhdGlvbikKYGBgCgpgYGB7cn0KbGlicmFyeShSUG9zdGdyZVNRTCkKYGBgCmBgYHtyfQpkYl9jb25uZWN0aW9uIDwtIGRiQ29ubmVjdChkcnYgPSBQb3N0Z3JlU1FMKG1heC5jb24gPSAyKSwgdXNlciA9IHBvc3RncmVzcWxfdXNlcm5hbWUsIHBhc3N3b3JkID0gcG9zdGdyZXNxbF9wYXNzd29yZCwgZGJuYW1lID0gJ3dyZXN0bGluZycsIGhvc3QgPSAnbG9jYWxob3N0JykKYGBgCgpgYGB7cn0KZGJHZXRRdWVyeShjb25uID0gZGJfY29ubmVjdGlvbiwgc3RhdGVtZW50ID0gIlNFTEVDVCAqIEZST00gd3Jlc3RsZXJzIikKYGBgCgppZCAtIElOVApib3JuIC0gVkFSQ0hBUgpuYW1lcyAtIFZBUkNIQVIKZ2VuZGVyIC0gVkFSQ0hBUgp3aW5fcGVyY2VudCAtIFJFQUwKdG90YWxfbWF0Y2hlcyAtIElOVAoKYGBge3J9CmRiRGlzY29ubmVjdChjb25uID0gZGJfY29ubmVjdGlvbikKYGBgCgoKYGBge3J9CmRiQ29ubmVjdChkcnYgPSBQb3N0Z3JlU1FMKG1heC5jb24gPSAxKSwgdXNlciA9IHVzZXJuYW1lLCBwYXNzd29yZCA9IHBhc3N3b3JkLCBkYm5hbWU9J212aGJkZ2RrJywgaG9zdD0nbWFubnkuZGIuZWxlcGhhbnRzcWwuY29tJykKYGBgCgoKCgoKCgoKCgoKCgoKCgoKCgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmhvbWVfbG9jYXRpb24gPC0gU3lzLmdldGVudigiSE9NRSIpCmNyZWRlbnRpYWxzX2xvY2F0aW9uIDwtIHBhc3RlMChob21lX2xvY2F0aW9uLCIvY3JlZGVudGlhbHMuUiIpCnNvdXJjZShjcmVkZW50aWFsc19sb2NhdGlvbikKYGBgCgpgYGB7cn0KbGlicmFyeShSUG9zdGdyZVNRTCkKYGBgCgpgYGB7cn0KZGJfY29ubmVjdGlvbiA8LSBkYkNvbm5lY3QoZHJ2ID0gUG9zdGdyZVNRTChtYXguY29uID0gMiksIHVzZXIgPSBwb3N0Z3Jlc3FsX3VzZXJuYW1lLCBwYXNzd29yZCA9IHBvc3RncmVzcWxfcGFzc3dvcmQsIGRibmFtZSA9ICd3cmVzdGxpbmcnLCBob3N0ID0gJ2xvY2FsaG9zdCcpCmBgYAoKYGBge3J9CmRiR2V0UXVlcnkoY29ubiA9IGRiX2Nvbm5lY3Rpb24sIHN0YXRlbWVudCA9ICJTRUxFQ1QgKiBGUk9NIHdyZXN0bGVycyIpCmBgYAoKaWQgLSBJTlQKYm9ybiAtIFZBUkNIQVIKbmFtZXMgLSBWQVJDSEFSCmdlbmRlciAtIFZBUkNIQVIKd2luX3BlcmNlbnQgLSBSRUFMCnRvdGFsX21hdGNoZXMgLSBJTlQKCmBgYHtyfQpkYkRpc2Nvbm5lY3QoY29ubiA9IGRiX2Nvbm5lY3Rpb24pCmBgYAoKCmBgYHtyfQpkYkNvbm5lY3QoZHJ2ID0gUG9zdGdyZVNRTChtYXguY29uID0gMSksIHVzZXIgPSB1c2VybmFtZSwgcGFzc3dvcmQgPSBwYXNzd29yZCwgZGJuYW1lPSdtdmhiZGdkaycsIGhvc3Q9J21hbm55LmRiLmVsZXBoYW50c3FsLmNvbScpCmBgYAoKCgoKCgoKCgoKCgoKCgoKCgoKCg==</div>
 
 
 

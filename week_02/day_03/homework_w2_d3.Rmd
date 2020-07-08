@@ -1,0 +1,189 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(RPostgreSQL)
+home_location <- Sys.getenv("HOME")
+credentials_location <- paste0(home_location,"/credentials.R")
+source(credentials_location)
+db_connect <- dbConnect(drv = PostgreSQL(), user = postgresql_username, password = postgresql_password, dbname = "omni_employees", host = "localhost")
+rm(postgresql_username, postgresql_password)
+```
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+```
+
+1.
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+WHERE department = 'Human Resources'
+```
+2.
+```{sql connection=db_connect}
+SELECT 
+  first_name,
+  last_name,
+  country
+FROM employees
+WHERE department = 'Legal'
+```
+3.
+```{sql connection=db_connect}
+SELECT 
+  country,
+  COUNT(id) AS number_of_employees
+  FROM employees
+  WHERE country = 'Portugal'
+  GROUP BY country
+```
+4.
+```{sql connection=db_connect}
+SELECT 
+  country,
+  COUNT(id) AS number_of_employees
+  FROM employees
+  WHERE country = 'Portugal' OR country = 'Spain'
+  GROUP BY country
+```
+
+```{r}
+dbListTables(conn = db_connect)
+```
+
+```{sql connection=db_connect}
+SELECT *
+FROM pay_details
+```
+
+5.
+```{sql connection=db_connect}
+SELECT 
+  COUNT(id) AS no_local_account_no
+FROM pay_details
+WHERE local_account_no IS NULL 
+```
+6.
+```{sql connection=db_connect}
+SELECT *
+FROM pay_details
+WHERE local_account_no IS NULL AND iban IS NULL
+```
+NO
+7.
+```{sql connection=db_connect}
+SELECT
+  first_name,
+  last_name
+FROM employees
+ORDER BY last_name ASC NULLS LAST
+```
+8.
+```{sql connection=db_connect}
+SELECT
+  first_name,
+  last_name,
+  country
+FROM employees
+ORDER BY country ASC NULLS LAST, last_name ASC NULLS LAST
+```
+9.
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+ORDER BY salary DESC NULLS LAST
+LIMIT 10
+```
+10.
+```{sql connection=db_connect}
+SELECT 
+  first_name,
+  last_name,
+  salary
+FROM employees
+WHERE country = 'Hungary'
+ORDER BY salary ASC NULLS LAST
+LIMIT 1
+
+```
+11.
+```{sql connection=db_connect}
+SELECT 
+  COUNT(*) AS first_name_starts_with_f
+FROM employees
+WHERE first_name LIKE 'F%'
+```
+12.
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+WHERE email LIKE '%yahoo%'
+```
+13.
+```{sql connection=db_connect}
+SELECT
+  COUNT(id) AS not_france_germany_pension
+FROM employees
+WHERE pension_enrol = TRUE AND country NOT IN ('France', 'Germany')
+```
+14.
+```{sql connection=db_connect}
+SELECT
+  pension_enrol,
+  COUNT(id) 
+FROM employees
+GROUP BY pension_enrol
+```
+15.
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+WHERE department = 'Engineering' and fte_hours = 1.0
+ORDER BY salary DESC NULLS LAST
+LIMIT 1
+```
+16.
+```{sql connection=db_connect}
+SELECT
+  department,
+  COUNT(id) AS num_employees
+FROM employees
+WHERE start_date BETWEEN '2003-01-01' AND '2003-12-31'
+GROUP BY department
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+dbDisconnect(db_connect)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
