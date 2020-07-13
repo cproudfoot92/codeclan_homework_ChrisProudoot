@@ -58,13 +58,13 @@ ON employees.team_id = teams.id
 
 ```{sql connection=db_connect}
 SELECT 
-  COUNT(teams.name) AS num_employees,
-  teams.name AS team_name
+  teams.name AS team_name,
+  COUNT(employees.id) AS num_employees
 FROM employees
-RIGHT JOIN teams
-ON employees.team_id = teams.id
+  RIGHT JOIN teams
+  ON employees.team_id = teams.id
 GROUP BY team_name
-ORDER BY COUNT(teams.name) DESC 
+ORDER BY COUNT(employees.id) DESC 
 ```
 
 ```{sql connection=db_connect}
@@ -108,9 +108,9 @@ negative_words <- c("worse", "worsening", "worst", "slow", "sluggish", "impatien
 feedback <- dbGetQuery(conn = db_connect,
                       statement = "SELECT *
                       FROM 
-                        (teams INNER JOIN employees
+                        (teams LEFT JOIN employees
                           ON teams.id = employees.team_id)
-                      INNER JOIN feedbacks
+                      LEFT JOIN feedbacks
                       ON 'feedbacks.employees_id' = 'employees.id'")
 ```
 

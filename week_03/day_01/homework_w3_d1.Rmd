@@ -1,0 +1,92 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+starbucks <- read_csv("starbucks_drinkMenu_expanded.csv")
+```
+
+```{r}
+dim(starbucks)
+```
+
+```{r}
+names(starbucks)
+```
+
+```{r}
+view(starbucks)
+```
+
+```{r}
+starbucks_cal <- starbucks %>%
+  select(Beverage_category:Calories) %>%
+  filter(Calories > 0)
+
+starbucks_cal
+```
+
+```{r}
+cal_difference <- starbucks %>%
+  select(Beverage_category:Calories) %>%
+  mutate(calorie_diff = Calories - 135)
+
+cal_difference
+```
+
+```{r}
+mean_cal <- starbucks %>%
+  select(Beverage_category:Calories) %>%
+  group_by(Beverage_category) %>%
+  summarise(average = mean(Calories)) %>%
+  arrange(desc(average)) %>%
+  slice(1:3, (n()-2):n())
+
+mean_cal
+```
+
+Smoothies, Frappuccinos and signature espresso drinks has the most calories where as classic espresso drink, shaken iced beverages and coffee has the least.
+
+```{r}
+mean_cal_prep <- starbucks %>%
+  select(Beverage_category:Calories) %>%
+  group_by(Beverage_prep) %>%
+  summarise(average = mean(Calories)) %>%
+  arrange(desc(average))
+
+mean_cal_prep
+```
+
+```{r}
+mean_cal_all <- starbucks %>%
+  select(Beverage_category:Calories) %>%
+  summarise(average = mean(Calories))
+mean_cal_all
+```
+
+
+```{r}
+mean_cal_prep <- starbucks %>%
+  select(Beverage_category:Calories) %>%
+  group_by(Beverage_prep) %>%
+  summarise(average = mean(Calories)) %>%
+  arrange(desc(average))%>%
+  filter(average > 193.8719)
+
+mean_cal_prep
+```
+
+```{r}
+coffee <- starbucks %>%
+  filter(Beverage_category == "Coffee") %>%
+  arrange(Calories) %>%
+  head(1)
+
+coffee
+```
+

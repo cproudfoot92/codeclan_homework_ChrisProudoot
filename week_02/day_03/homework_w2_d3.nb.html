@@ -1751,14 +1751,9 @@ summary {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShSUG9zdGdyZVNRTClcbmBgYCJ9 -->
-<pre class="r"><code>library(RPostgreSQL)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBEQklcbiJ9 -->
-<pre><code>Loading required package: DBI</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaG9tZV9sb2NhdGlvbiA8LSBTeXMuZ2V0ZW52KFwiSE9NRVwiKVxuY3JlZGVudGlhbHNfbG9jYXRpb24gPC0gcGFzdGUwKGhvbWVfbG9jYXRpb24sXCIvY3JlZGVudGlhbHMuUlwiKVxuc291cmNlKGNyZWRlbnRpYWxzX2xvY2F0aW9uKVxuZGJfY29ubmVjdCA8LSBkYkNvbm5lY3QoZHJ2ID0gUG9zdGdyZVNRTCgpLCB1c2VyID0gcG9zdGdyZXNxbF91c2VybmFtZSwgcGFzc3dvcmQgPSBwb3N0Z3Jlc3FsX3Bhc3N3b3JkLCBkYm5hbWUgPSBcIm9tbmlfZW1wbG95ZWVzXCIsIGhvc3QgPSBcImxvY2FsaG9zdFwiKVxucm0ocG9zdGdyZXNxbF91c2VybmFtZSwgcG9zdGdyZXNxbF9wYXNzd29yZClcbmBgYCJ9 -->
-<pre class="r"><code>home_location &lt;- Sys.getenv(&quot;HOME&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShSUG9zdGdyZVNRTClcbmhvbWVfbG9jYXRpb24gPC0gU3lzLmdldGVudihcIkhPTUVcIilcbmNyZWRlbnRpYWxzX2xvY2F0aW9uIDwtIHBhc3RlMChob21lX2xvY2F0aW9uLFwiL2NyZWRlbnRpYWxzLlJcIilcbnNvdXJjZShjcmVkZW50aWFsc19sb2NhdGlvbilcbmRiX2Nvbm5lY3QgPC0gZGJDb25uZWN0KGRydiA9IFBvc3RncmVTUUwoKSwgdXNlciA9IHBvc3RncmVzcWxfdXNlcm5hbWUsIHBhc3N3b3JkID0gcG9zdGdyZXNxbF9wYXNzd29yZCwgZGJuYW1lID0gXCJvbW5pX2VtcGxveWVlc1wiLCBob3N0ID0gXCJsb2NhbGhvc3RcIilcbnJtKHBvc3RncmVzcWxfdXNlcm5hbWUsIHBvc3RncmVzcWxfcGFzc3dvcmQpXG5gYGAifQ== -->
+<pre class="r"><code>library(RPostgreSQL)
+home_location &lt;- Sys.getenv(&quot;HOME&quot;)
 credentials_location &lt;- paste0(home_location,&quot;/credentials.R&quot;)
 source(credentials_location)
 db_connect &lt;- dbConnect(drv = PostgreSQL(), user = postgresql_username, password = postgresql_password, dbname = &quot;omni_employees&quot;, host = &quot;localhost&quot;)
@@ -2143,6 +2138,9 @@ GROUP BY department</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGJEaXNjb25uZWN0KGRiX2Nvbm5lY3QpXG5gYGAifQ== -->
 <pre class="r"><code>dbDisconnect(db_connect)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFRSVUVcbiJ9 -->
+<pre><code>[1] TRUE</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
