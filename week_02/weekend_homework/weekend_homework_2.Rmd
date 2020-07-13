@@ -1,0 +1,133 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(RPostgreSQL)
+home_location <- Sys.getenv("HOME")
+credentials_location <- paste0(home_location,"/credentials.R")
+source(credentials_location)
+db_connect <- dbConnect(drv = PostgreSQL(), user = postgresql_username, password = postgresql_password, dbname = "acme_employees", host = "localhost")
+rm(postgresql_username, postgresql_password)
+```
+
+```{r}
+dbListTables(db_connect)
+```
+
+
+```{sql connection=db_connect}
+SELECT *
+FROM teams
+```
+
+```{sql connection=db_connect}
+SELECT *
+FROM feedbacks
+```
+
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+```
+
+```{sql connection=db_connect}
+SELECT 
+  id,
+  first_name,
+  last_name,
+  CONCAT(first_name,' ', last_name) AS full_name,
+  email,
+  team_id
+FROM employees
+```
+
+```{sql connection=db_connect}
+SELECT 
+  employees.id,
+  employees.first_name,
+  employees.last_name,
+  employees.email,
+  teams.name AS team_name
+FROM employees
+LEFT JOIN teams
+ON employees.team_id = teams.id
+
+```
+
+```{sql connection=db_connect}
+SELECT 
+  COUNT(teams.name) AS num_employees,
+  teams.name AS team_name
+FROM employees
+RIGHT JOIN teams
+ON employees.team_id = teams.id
+GROUP BY team_name
+ORDER BY COUNT(teams.name) DESC 
+```
+
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+WHERE email IS NULL OR NOT email LIKE '%@%'
+```
+
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+LEFT JOIN feedbacks
+ON employees.id = feedbacks.employee_id
+ORDER BY feedbacks.date DESC NULLS LAST
+LIMIT 1
+```
+
+```{sql connection=db_connect}
+SELECT *
+FROM employees
+LEFT JOIN teams
+ON employees.team_id = teams.id
+WHERE employees.first_name LIKE '_'
+ORDER BY teams.name
+
+```
+Risk Team 1
+
+```{sql connection=db_connect}
+
+```
+
+
+```{r}
+positive_words <- c("great", "good", "happy", "content", "fulfilled", "fulfilled", "positive", "positives", "cheerful", "nice", "ambition", "ambitions", "ambitious", "friendly", "progress", "joy", "fast", "achieve", "achieving", "achievements", "best", "better",  "unlimited", "pros", "competitive", "opportunity", "advancement", "friendly", "smart", "interesting", "challenging", "grow", "caring", "balance", "helpful")
+
+negative_words <- c("worse", "worsening", "worst", "slow", "sluggish", "impatient", "unfulfilled", "unfulfilling", "negative", "bad", "limited", "limit", "limitations", "cons", "frustrated", "frustrating", "frustration", "dull", "boring", "politics", "political", "ignore", "ignored", "ignoring", "sad", "depressed", "depressing", "nasty", "stress", "stresses", "stressed", "horrid", "horrible", "terrible", "deadline", "deadlines", "uncaring", "remote")
+```
+
+```{r}
+feedback <- dbGetQuery(conn = db_connect,
+                      statement = "SELECT *
+                      FROM 
+                        (teams INNER JOIN employees
+                          ON teams.id = employees.team_id)
+                      INNER JOIN feedbacks
+                      ON 'feedbacks.employees_id' = 'employees.id'")
+```
+
+```{r}
+feedback
+```
+
+
+
+
+
+
+
+
+
+
+```{r}
+dbDisconnect(db_connect)
+```
+
