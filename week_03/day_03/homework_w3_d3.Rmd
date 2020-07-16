@@ -1,0 +1,113 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+tweets <- read_csv("data/code_clan_tweets.csv")
+
+dim(tweets)
+
+names(tweets)
+
+head(tweets)
+```
+
+```{r}
+boxplot(tweets$favorite_count)
+```
+
+Yes there are quite a few outliers.
+
+```{r}
+tweets %>%
+  filter(is_quote == FALSE) %>%
+  summarise(total = sum(favorite_count))
+```
+
+```{r}
+tweets %>%
+  group_by(source) %>%
+  summarise(mean_retweet = mean(retweet_count))
+```
+
+```{r}
+tweets %>%
+  group_by(media_type) %>%
+  summarise(like_count = sum(favorite_count))%>%
+  arrange(desc(like_count))%>%
+  mutate(media_type = 
+           replace(media_type,
+                   is.na(media_type), "text")
+         )
+```
+
+```{r}
+tweets %>%
+  summarise(character_mean = mean(display_text_width))
+```
+
+```{r}
+info <- read_csv("data/code_clan_info.csv")
+```
+
+```{r}
+tweet_join <- inner_join(tweets, info, by = "tweet_id")
+```
+
+```{r}
+names(tweet_join)
+```
+
+```{r}
+hashtag_tip <- tweet_join %>%
+  select(tweet_id, hashtags) %>%
+  drop_na(hashtags) %>%
+  mutate(hashtags = tolower(hashtags))
+  
+```
+
+```{r}
+hashtag_vec <- pull(hashtag_tip, hashtags)
+
+```
+
+```{r}
+hashtag_string <- str_c(hashtag_vec, sep = " ")
+
+hashtag_string
+```
+
+```{r}
+hash_pattern <- "[c(]"
+
+hashtag_string %>%
+  str_count(hash_pattern)
+  
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

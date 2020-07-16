@@ -60,7 +60,7 @@ First, you’ll need to decide a cut off for how many responses you want to acce
 face_separated <- face_longer %>%
   separate(characteristcs, 
            into = c("characteristc1","characteristc2","characteristc3" ), 
-           sep = "([,./])")
+           sep = "([,./?])")
 
 head(face_separated)
 ```
@@ -92,9 +92,9 @@ Hint Hint: look back at the previous sections where we dealt with null values (i
 
 ```{r}
 filtered_description <- all_description %>%
-  drop_na(description) %>%
-  add_count(description) %>%
-  filter(n > 1)
+  filter(!is.na(description),
+         nchar(description) > 1)
+  
   
 
 filtered_description
@@ -106,6 +106,17 @@ Now we can actually find something out about our data. Let’s find out what the
 
 Group the data by description, and summarise the data by generating a count for each group.
 
+```{r}
+grouped_faces <- filtered_description %>%
+  group_by(description)
+
+grouped_faces
+```
+
+```{r}
+sum_faces <- summarise(grouped_faces, n = n())
+sum_faces
+```
 
 
 Question 8
@@ -115,6 +126,13 @@ Hint Do you need ascending or descending order for this? Create a tibble called 
 
 This will help us answer the question: what are the most common descriptions of faces given?
 
+```{r}
+top_10_description <- sum_faces %>%
+  arrange(desc(n)) %>%
+  head(10)
+
+top_10_description
+```
 
 
 Question 9
