@@ -84,7 +84,7 @@ hashtag_string
 ```
 
 ```{r}
-hash_pattern <- "[c(]"
+hash_pattern <- "[c("
 
 hashtag_string %>%
   str_count(hash_pattern)
