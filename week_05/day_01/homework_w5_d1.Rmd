@@ -1,0 +1,76 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Question 1.
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(CodeClanData)
+```
+
+```{r}
+head(backpack)
+dim(backpack)
+names(backpack)
+```
+
+ Question 2.
+ 
+```{r}
+ggplot(backpack) +
+  aes(x = backpack_weight) +
+  geom_histogram(col = "white")
+```
+The distribution of the backback weight is close to being normal with maybe a slight right skew.
+
+
+Question 3.
+
+```{r}
+ggplot(backpack) +
+  aes(x = backpack_weight) +
+  geom_histogram(col = "white") +
+  facet_wrap(~ sex)
+```
+The weight of the male bags is slightly more spread out than the females.
+
+
+Question 4.
+
+```{r}
+ggplot(backpack) +
+  aes(x = body_weight, y = backpack_weight) +
+  geom_point()
+```
+There is a weak positive relationsihp between body weight and backpack weight.
+
+
+Question 5.
+
+```{r}
+ggplot(backpack) +
+  aes(x = body_weight, y = backpack_weight, group = sex, col = sex) +
+  geom_point()  +
+  facet_wrap(~ sex)
+```
+
+
+
+```{r}
+back_problems <- backpack %>%
+  count(back_problems)
+
+ggplot(back_problems) + 
+  aes(x = " ", y = n, fill = n) +
+  geom_bar(width = 0.5, stat = "identity") +
+  coord_polar("y")
+```
+
+
+```{r}
+
+```
+
