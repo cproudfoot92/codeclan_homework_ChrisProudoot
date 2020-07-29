@@ -1,0 +1,114 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+3.1 Comparison
+
+```{r}
+library(CodeClanData)
+library(tidyverse)
+```
+
+```{r}
+ggplot(late_deliveries) +
+  aes(x = date, y = late_deliveries) +
+  geom_line() +
+  labs(
+    title = "Late deliveries",
+    y = "Number of late deliveries",
+    x = "\nDate")
+```
+
+```{r}
+ggplot(recovery_times) +
+  aes(x = prognosis, y = recovery, fill = treatment_group) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Recovery of treatment",
+    x = "Recovery",
+    y = "Prognosis",
+    fill = "Treatment group"
+  )
+```
+
+```{r}
+ggplot(fitness_levels) +
+  aes(x = age, y = fitness_score, colour = child) +
+  geom_line() +
+  labs(
+    title = "Fitness of children over time",
+    x = "Age",
+    y = "Fitness score"
+    ) +
+  facet_wrap(~ group)
+```
+
+
+3.2 Connection
+
+```{r}
+ggplot(blood_pressure) +
+  aes(x = daily_saturated_fat_intake_mg,
+      y = systolic_blood_pressure_mm_hg) +
+  labs(
+    title = "Blood pressure vs saturated fat intake",
+    x = "Daily saturated fat intake (mg)",
+    y = "Systolic blood pressure (mmHg)"
+    ) +
+  geom_point() 
+```
+
+
+```{r}
+ggplot(car_use) +
+  aes(x = car_use_percent, y = air_so2_concentration_ppm, size = population, colour = population) +
+  labs(
+    title = "Concentration of sulfur dioxide vs car use vs population",
+    x = "Car use (%)",
+    y = "Air SO2 concentration (ppm)",
+    colour = "Population"
+    ) +
+  geom_point()
+```
+
+
+```{r}
+ggplot(d20_outcomes) +
+  aes(x = outcome) +
+  geom_histogram(bins = 20, colour = "white")
+```
+
+```{r}
+ggplot(d20x5_outcomes) +
+  aes(x = outcome) +
+  geom_histogram(bins = 15, colour = "white")
+```
+
+
+```{r}
+pension_surplus %>%
+  mutate(item = factor(item, levels = item)) %>%
+  ggplot() +
+  aes(x = item, y = balance) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "Pension surplus",
+    x = "Item",
+    y = "Balance"
+    ) +
+  coord_flip()
+```
+
+```{r}
+ggplot(pension_liabilities) +
+  aes(x = year, y = liability_millions, fill = liability_type) +
+  geom_area(stat = "identity") +
+  labs(
+    title = "Pension liabilities",
+    x = "Year",
+    y = "Liability millions",
+    fill = "Liability type"
+    ) 
+```
+
