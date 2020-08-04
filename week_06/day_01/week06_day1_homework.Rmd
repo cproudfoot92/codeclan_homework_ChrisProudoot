@@ -1,0 +1,186 @@
+---
+title: "week6 day1 homework"
+author: "Chris Proudfoot"
+date: "03/08/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Titanic survivors
+
+```{r}
+library(tidyverse)
+library(prob)
+library(gtools)
+titanic_tibble <- tibble(
+  passenger = c(488, 812),
+  crew = c(215, 703), 
+)
+
+titanic_tibble <- titanic_tibble %>%
+    mutate(total_deaths = rowSums(.), 
+           status = c("survived", "died")) %>%
+  select(status, passenger, crew, total_deaths )
+
+titanic_tibble 
+```
+Total passengers and crew
+$$703 + 1515 = 2218$$
+
+prob( survived ∩ crew ) and prob( survived ∩ passenger )
+$$\frac{215}{2218} = 0.097\\
+\frac{488}{2218} = 0.220$$
+
+$$215 + 703 = 918\\
+488 + 812 = 1300$$
+
+$$\frac{918}{2218} = 0.414\\
+\frac{1300}{2218} = 0.586$$
+
+prob( survived ∣ crew ) and  prob( survived ∣ passenger )
+$$\frac{0.097}{0.414} = 0.234\\
+\frac{0.220}{0.586}= 0.375$$
+
+
+
+
+1. If I roll a six-sided dice once, what is the probability of getting a number less than 5?
+
+$$\frac{4}{6} = 0.667$$
+
+2. How many outcomes are there in the sample space of an experiment in which we toss three dice?
+
+```{r}
+nrow(rolldie(3))
+```
+
+
+3. In an experiment where we roll four dice:
+
+```{r}
+four_die <- rolldie(4)
+
+nrow(four_die)
+```
+
+
+how many outcomes are in the event total_equals_5_6_7 (i.e. the total of the four dice equals 5, 6 or 7)?
+
+```{r}
+total_four <- rowSums(four_die) 
+
+as.data.frame(table(total_four)) 
+  
+```
+34
+
+what is the probability of this event?
+
+$$\frac{34}{1296} = 0.026$$
+
+what assumptions do we apply in answering part ii?
+
+
+4. Five chairs are placed in a row in a room, along with five people of differing height. The people sit down randomly on the chairs. What is the probability that they sit in order of decreasing height, left to right?
+
+```{r}
+people <- c("person1", "person2", "person3", "person4", "person5")
+nrow(permutations(n = 5,
+               r = 5,
+               v = people,
+               repeats.allowed = FALSE))
+```
+
+$$\frac{1}{120} = 0.0083$$
+
+5. I roll six dice:
+
+```{r}
+nrow(rolldie(6))
+```
+
+what is the probability I see the numbers 6, 5, 4, 3, 2 and 1 in order on the dice, left to right?
+
+$$\frac{1}{46656} = 0.000021$$
+
+what is the probability I see one each of the numbers 6, 5, 4, 3, 2 and 1 on the dice regardless of order?
+
+```{r}
+six_die <- 1:6
+
+nrow(permutations(n = 6,
+             r = 6,
+             v = six_die,
+             repeats.allowed = FALSE))
+```
+
+$$\frac{720}{46656} = 0.01543$$
+
+[Hint have a look at the isin() function in the prob package. For example, to filter all rows containing 6, 1, 2 in that order, you could use isin(., c(6, 1, 2), ordered = TRUE)]
+
+
+6. If I draw a single card from a 52-card deck, and it is black, what is the probability that its suit is spades?
+
+$$\frac{13}{52} = 0.25\\
+\frac{26}{52} = 0.5\\
+0.25 \times 0.5 = 0.125$$
+
+Hints
+
+7. Eight patients: Alice, Bob, Carmen, Dinesh, Ella, Fergus, Gianna and Henry are waiting to see a doctor, but only five appointment slots are left today.
+
+```{r}
+patients <- c("Alice", "Bob", "Carmen", "Dinesh", "Ella", "Fergus", "Gianna", "Henry")
+```
+
+
+
+In how many different orders can the doctor see patients today?
+
+```{r}
+waiting_room <- as_tibble(
+  combinations(n = 8,
+             r = 5,
+             v = patients,
+             repeats.allowed = FALSE))
+
+nrow(waiting_room)
+```
+What is the probability of Gianna and Danesh both being seen today?
+
+```{r}
+waiting_room %>%
+  isin(c("Gianna", "Dinesh"), ordered = FALSE) %>%
+  sum()
+```
+
+What is the probability of Gianna being seen before Dinesh today?
+Hint
+$$\frac{10}{20} = 0.5$$
+(harder) Carmen and Henry have now been triaged as high priority and will be seen in the first two available slots, although their order hasn’t yet been determined. In how many different orders can the patients now be seen?
+
+
+
+Hint
+
+8. If order is not significant, how many ways are there to select a 5 student quiz team from a group of 8 students?
+
+
+9. (harder) How would your answer for question 8 change if a team captain had to be selected for each team?
+
+
+10. The following data from a sample of 120 families shows the record of university attendance by mothers and their eldest sons.
+
+in 32 families, both the mother and son attended university;
+in 31 families, neither the mother nor the son attended university
+in 22 families, the mother attended university while the son did not
+in 35 families, the son attended university while the mother did not.
+Arrange the data above in a convenient dataframe and answer the following questions:
+
+What is the probability that a son attended university given that his mother attended university?
+What is the probability that a son attended university given that his mother did not attend university?
+Is attending university by the son independent of whether his mother attended university?
+Hint - code to set up dataframe - try yourself first though!
