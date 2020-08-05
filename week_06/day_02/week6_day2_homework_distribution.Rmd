@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(prob)
+
+library(readr)
+library(janitor)
+library(tidyverse)
+```
+
+```{r}
+phones <- read_csv("data/20190928-items.csv")
+```
+
+```{r}
+phones <- clean_names(phones)
+glimpse(phones)
+```
+
+```{r}
+phones %>%
+  group_by(brand) %>%
+  summarise(sum_phones = n()) %>%
+  arrange(desc(sum_phones)) %>%
+  head(1)
+```
+Samsung has the highest number of phones in the dataset.
+
+
+```{r}
+samsung_stats <- phones %>%
+  filter(brand == "Samsung") %>%
+  summarise(
+    num = n(),
+    mean = mean(rating),
+    sd = sd(rating)
+  )
+samsung_stats
+```
+ 
+With a mean of 3.47 and a standard deviation of 0.68 this tells us that atleast 68% of the population lies between 2.79 and 4.15
+ 
+```{r}
+phone_plot <- phones %>% 
+  filter(brand == "Samsung") %>%
+  ggplot(aes(x = rating)) +
+  geom_histogram(aes(y = ..density..), col = "white", bins = 25) +
+  stat_function(
+    fun = dnorm, 
+    args = list(
+      mean = samsung_stats$mean, 
+      sd = samsung_stats$sd
+    ),
+    col = "red"
+  )
+phone_plot
+```
+
+The distribution of the plot is unimodal and close to normal
+
+```{r}
+phones %>%
+  filter(rating >= samsung_stats$mean - samsung_stats$sd) %>%
+  filter(rating <= samsung_stats$mean + samsung_stats$sd) %>%
+  summarise(prop_within_1sd = n() / nrow(phones))
+```
+
+
+```{r}
+phones %>%
+  filter(rating >= samsung_stats$mean - (samsung_stats$sd * 2)) %>%
+  filter(rating <= samsung_stats$mean + (samsung_stats$sd * 2)) %>%
+  summarise(prop_within_2nd = n() / nrow(phones))
+```
+
+```{r}
+phones %>%
+  filter(rating >= samsung_stats$mean - (samsung_stats$sd * 3)) %>%
+  filter(rating <= samsung_stats$mean + (samsung_stats$sd * 3)) %>%
+  summarise(prop_within_2nd = n() / nrow(phones))
+```
+
+This tells us that there is around a 78% chance of someone will rate a Samsung phone in the range of one standard deviation of the mean, which is around 2.79 to 4.15. Theres a 93% chance they will rate it two standard deviations from the mean and 98% that they will rate it Three from the mean.
