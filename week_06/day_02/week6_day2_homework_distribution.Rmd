@@ -62,25 +62,32 @@ phone_plot
 The distribution of the plot is unimodal and close to normal
 
 ```{r}
-phones %>%
+samsung_ratings <- phones %>%
+  filter(brand == "Samsung") %>%
+  select(rating)
+```
+
+
+```{r}
+samsung_ratings %>%
   filter(rating >= samsung_stats$mean - samsung_stats$sd) %>%
   filter(rating <= samsung_stats$mean + samsung_stats$sd) %>%
-  summarise(prop_within_1sd = n() / nrow(phones))
+  summarise(prop_within_1sd = n() / nrow(samsung_ratings))
 ```
 
 
 ```{r}
-phones %>%
+samsung_ratings %>%
   filter(rating >= samsung_stats$mean - (samsung_stats$sd * 2)) %>%
   filter(rating <= samsung_stats$mean + (samsung_stats$sd * 2)) %>%
-  summarise(prop_within_2nd = n() / nrow(phones))
+  summarise(prop_within_2nd = n() / nrow(samsung_ratings))
 ```
 
 ```{r}
-phones %>%
+samsung_ratings %>%
   filter(rating >= samsung_stats$mean - (samsung_stats$sd * 3)) %>%
   filter(rating <= samsung_stats$mean + (samsung_stats$sd * 3)) %>%
-  summarise(prop_within_2nd = n() / nrow(phones))
+  summarise(prop_within_2nd = n() / nrow(samsung_ratings))
 ```
 
-This tells us that there is around a 78% chance of someone will rate a Samsung phone in the range of one standard deviation of the mean, which is around 2.79 to 4.15. Theres a 93% chance they will rate it two standard deviations from the mean and 98% that they will rate it Three from the mean.
+This tells us that there is around a 79% chance of someone will rate a Samsung phone in the range of one standard deviation of the mean, which is around 2.79 to 4.15. Theres a 92% chance they will rate it two standard deviations from the mean and 98% that they will rate it Three from the mean.

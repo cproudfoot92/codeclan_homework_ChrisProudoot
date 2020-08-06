@@ -154,7 +154,7 @@ What is the probability of Gianna and Danesh both being seen today?
 ```{r}
 waiting_room %>%
   isin(c("Gianna", "Dinesh"), ordered = FALSE) %>%
-  sum()
+  sum() 
 ```
 
 What is the probability of Gianna being seen before Dinesh today?

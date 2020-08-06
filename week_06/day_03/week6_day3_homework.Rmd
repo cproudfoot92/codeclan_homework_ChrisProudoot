@@ -1,0 +1,82 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(infer)
+```
+
+```{r}
+ames <- read_csv("ames.csv")
+ames <- clean_names(ames)
+glimpse(ames)
+```
+
+```{r}
+boxplot(ames$lot_area, horizontal = TRUE)
+```
+
+```{r}
+ames %>%
+  ggplot(aes(x = lot_area))+
+  geom_histogram()
+```
+Its hard to see the distribution due to the number of outliers
+
+```{r}
+infer_ames <- ames %>%
+  specify(response = lot_area) %>%
+  generate(reps = 5000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+infer_ames
+```
+
+```{r}
+infer_ames %>%
+  ggplot(aes(x = stat)) +
+  geom_histogram(col = "white")
+```
+
+Now with the 5000 boot straps you can see that the distribution is pretty close to normal.
+
+
+```{r}
+infer_ci_95 <- infer_ames %>%
+  get_ci(level = 0.95, type = "percentile")
+
+infer_ci_95
+```
+
+
+
+```{r}
+infer_ames %>%
+  visualise() +
+  shade_confidence_interval(endpoints = infer_ci_95)
+```
+These is a strong likelihood that any house sold will have a lot area that will sit within the shaded area.
+
+```{r}
+infer_ci_99 <- infer_ames %>%
+  get_ci(level = 0.99, type = "percentile")
+
+infer_ci_99
+```
+
+```{r}
+infer_ames %>%
+  visualise() +
+  shade_confidence_interval(endpoints = infer_ci_99)
+```
+
+it is very unlikely for the lot area to lie outside the shaded area
+
+```{r}
+ames %>%
+  summarise(mean(lot_area))
+```
+
