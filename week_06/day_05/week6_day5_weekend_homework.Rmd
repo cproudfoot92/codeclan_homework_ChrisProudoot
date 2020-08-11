@@ -1,0 +1,47 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(infer)
+data(msleep)
+```
+
+```{r}
+glimpse(msleep)
+```
+
+
+$$\alpha = 0.5\\
+H_0: \mu \text{ sleep_total } = 7 \\
+H_a: \mu \text{ sleep_total } \neq 7$$
+
+
+```{r}
+mean_sleep_total <- msleep %>%
+  summarise(mean_sleep_total = mean(sleep_total))
+
+mean_sleep_total
+```
+
+```{r}
+null_distribution <- msleep %>%
+  specify(response = sleep_total) %>%
+  hypothesise(null = "point", mu = 7) %>%
+  generate(reps = 5000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+head(null_distribution)
+```
+
+```{r}
+p_value <- null_distribution %>%
+  get_p_value(obs_stat = observed_stat$mean_rating,
+              
+              direction = "both")
+
+p_value
+```
+

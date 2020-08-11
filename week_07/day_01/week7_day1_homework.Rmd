@@ -1,0 +1,95 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(dplyr)
+library(lubridate)
+library(tidyverse)
+library(tsibble)
+library(tsibbledata)
+library(feasts)
+library(nycflights13)
+date1 <- ymd_hms("2017-04-22 22:01:18")
+date2 <- ymd_hms("2001-11-07 10:09:56")
+```
+
+Question 1
+
+```{r}
+year(date1)
+month(date1, label = TRUE, abbr = FALSE)
+mday(date1)
+yday(date1)
+wday(date1)
+```
+
+Question2
+
+```{r}
+next_fortnight <- date1 + weeks(2)
+next_fortnight
+```
+
+```{r}
+previous_decade <- date2 - years(10)
+previous_decade
+```
+
+Question 3
+
+```{r}
+this_year <- today()
+this_year
+```
+
+```{r}
+interval_years <- lubridate::interval(previous_decade, this_year)
+```
+
+Question 4
+
+```{r}
+nyc_date1 <- with_tz(date1, tzone = "America/New_York")
+nyc_date2 <- with_tz(date2, tzone = "America/New_York")
+```
+
+Question 5
+
+```{r}
+nycflights13::flights %>%
+  mutate(departure_date = make_datetime(year, month, day, hour, minute)) %>%
+  select(departure_date)
+
+```
+
+Question 6
+
+```{r}
+weather <- nycflights13::weather 
+weather %>%
+  select(temp, humid, precip, time_hour, origin)
+
+weather 
+  
+```
+
+
+
+```{r}
+weather_tsibble <- weather %>%
+  as_tsibble(key = origin, index = time_hour)
+```
+
+```{r}
+weather_tsibble %>%
+  mutate(year_month = yearmonth(time_hour)) %>%
+  autoplot(temp)
+
+```
+
+```{r}
+
+```
+
