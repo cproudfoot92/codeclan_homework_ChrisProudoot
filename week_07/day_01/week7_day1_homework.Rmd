@@ -67,8 +67,7 @@ nycflights13::flights %>%
 Question 6
 
 ```{r}
-weather <- nycflights13::weather 
-weather %>%
+weather <- nycflights13::weather %>%
   select(temp, humid, precip, time_hour, origin)
 
 weather 

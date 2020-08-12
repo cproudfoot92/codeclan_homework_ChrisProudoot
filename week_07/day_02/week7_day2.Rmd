@@ -1,0 +1,147 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(tsibble)
+library(tsibbledata)
+library(fable)
+```
+
+```{r}
+nyc_bikes
+```
+
+```{r}
+bikes <- nyc_bikes %>%
+  mutate(year = year(start_time),
+         month = month(start_time),
+         date = as_date(start_time))
+bikes
+```
+
+```{r}
+monthly_hires <- bikes %>%
+  index_by(month) %>%
+  summarise(num_hires = n())
+monthly_hires
+```
+
+```{r}
+ggplot(monthly_hires) +
+  aes(x = month, y = num_hires) +
+  geom_line()
+```
+
+This tells us that the number of bike hires peaks in the summer then drops coming into winter. This plot is too 'well fit'?? to build an accurate forecast.
+
+```{r}
+daily_hires <- bikes %>%
+  index_by(date) %>%
+  summarise(num_hires = n())
+daily_hires
+```
+
+```{r}
+daily_hires %>%
+  autoplot(num_hires)
+```
+
+Here we can see a lot of peaks and troughs. They don't seem to be in any sort of pattern, they might be due to weather conditions. This data would be more appropriate than the months data.
+
+```{r}
+filled_daily_hires <- fill_gaps(daily_hires,
+                                num_hires = as.integer(median(num_hires)))
+```
+
+```{r}
+model_fit <- filled_daily_hires %>%
+  model(
+    snaive_model = SNAIVE(num_hires),
+    mean_model = MEAN(num_hires),
+    arima_model = ARIMA(num_hires)
+  )
+
+```
+
+```{r}
+bike_forecast <- model_fit %>%
+  fabletools::forecast(h = 120)
+bike_forecast
+```
+
+```{r}
+bike_forecast %>%
+  autoplot(filled_daily_hires, level = NULL)
+
+```
+
+```{r}
+bike_training <- filled_daily_hires %>%
+  filter_index("2018-01-01" ~ "2018-09-15")
+```
+
+```{r}
+fit_training <- bike_training %>%
+  model(
+    snaive_model = SNAIVE(num_hires),
+    mean_model = MEAN(num_hires),
+    arima_model = ARIMA(num_hires)
+  )
+```
+
+```{r}
+ymd("2018-12-31") - ymd("2018-09-15") 
+```
+
+```{r}
+forcast_training <- fit_training %>%
+  fabletools::forecast(h = 107)
+```
+
+```{r}
+forcast_training %>%
+  autoplot(bike_training, level = NULL)
+```
+
+```{r}
+accuracy_model <- fabletools::accuracy(forcast_training, filled_daily_hires)
+
+accuracy_model%>%
+  arrange(RMSE)
+```
+
+Unfortunately all of the models are not a suable fit. The mean and the arima are both straight horizontal lines and don't fit in with the peaks and troughs of the data. The snaive has peaks and troughs but it moves perfectly horizontal and doesn't follow the rise and fall throughout the year. To remedy this I might see is I could use bootstrapping to bulk up the data which would give a more distinct trend. Or ask for more data for the client. Or see if there are models out there more suitable to the data.
+
+```{r}
+bikes %>%
+  ggplot() +
+  aes(x = start_long, y = start_lat, colour = month) +
+  geom_point() +
+  scale_fill_brewer() +
+  facet_wrap(~ bike_id)
+```
+
+```{r}
+bikes %>%
+  ggplot() +
+  aes(x = end_long, y = end_lat, colour = month) +
+  geom_point() +
+  facet_wrap(~ bike_id)
+```
+
+These plots show that certain bikes were used more at certain times of the year.
+
+```{r}
+library(leaflet)
+```
+
+```{r}
+leaflet(bikes) %>%
+  addTiles() %>%
+  addMarkers(lng = ~start_long, lat = ~start_lat)
+```
+
