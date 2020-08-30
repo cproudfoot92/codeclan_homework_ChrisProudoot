@@ -3,6 +3,7 @@ library(shiny)
 library(CodeClanData)
 library(dplyr)
 library(shinythemes)
+library(shinyWidgets)
 
 ui <- fluidPage(
     
@@ -12,17 +13,23 @@ ui <- fluidPage(
     
     sidebarLayout(
         sidebarPanel(
-            checkboxGroupInput("platform",
-                               "Platform",
-                               choices = unique(game_sales$platform)
+            pickerInput("platform",
+                        "Platform",
+                        choices = unique(game_sales$platform),
+                        options = list(
+                            `actions-box` = TRUE), 
+                        multiple = TRUE
             ),
-            actionLink("selectall","Select All"),
             
-            checkboxGroupInput("genre",
-                               "Genre",
-                               choices = unique(game_sales$genre)
+            
+            pickerInput("genre",
+                        "Genre",
+                        choices = unique(game_sales$genre),
+                        options = list(
+                            `actions-box` = TRUE), 
+                        multiple = TRUE
             ),
-            actionLink("selectall2","Select All"),
+            
             
             sliderInput("year",
                         "Year",
@@ -42,12 +49,13 @@ ui <- fluidPage(
         mainPanel(
             tabsetPanel(
                 tabPanel("Title",
+                         fluidRow(
                          column(6,
-                                imageOutput("image1", height = 150)
+                                imageOutput("image1",width = 100, height = 50)
                          ),
                          column(6,
-                                imageOutput("image2", height = 150)
-                         )
+                                imageOutput("image2", height = 100)
+                         ))
                 ),
                 # tabPanel("Line",
                 #          plotOutput("line_plot")
@@ -58,7 +66,7 @@ ui <- fluidPage(
                 #          ),
                 
                 tabPanel("Data",
-                         tableOutput("table_output")
+                         dataTableOutput("table_output")
                          )
             )
         )
@@ -73,49 +81,11 @@ server <- function(input, output, session) {
             filter(platform == input$platform)  %>%
             filter(genre == input$genre) %>%
             filter(year_of_release == input$year) %>%
-            filter(critic_score == input$score) %>%
-            slice(1:10)
+            filter(critic_score == input$score) 
         
     })
-    observe({
-        if(input$selectall == 0) return(NULL) 
-        else if (input$selectall %% 2 == 0)
-        {
-            updateCheckboxGroupInput(session,
-                                     "platform",
-                                     "Platform",
-                                     choices = unique(game_sales$platform))
-        }
-        else
-        {
-            updateCheckboxGroupInput(session,
-                                     "platform",
-                                     "Platform",
-                                     choices = unique(game_sales$platform), selected = unique(game_sales$platform))
-        }
-    })
-    observe({
-        if(input$selectall2 == 0) return(NULL) 
-        else if (input$selectall2 %% 2 == 0)
-        {
-            updateCheckboxGroupInput(session,
-                                     "genre",
-                                     "Genre",
-                                     choices = unique(game_sales$genre))
-        }
-        else
-        {
-            updateCheckboxGroupInput(session,
-                                     "genre",
-                                     "Genre",
-                                     choices = unique(game_sales$genre), selected = unique(game_sales$genre))
-        }
-    })
-    # output$line_plot <- renderPlot({
-    #     ggplot() +
-    #         aes()
-    # })
     
+  
     
     
     
@@ -142,7 +112,7 @@ server <- function(input, output, session) {
     }, deleteFile = FALSE)
     
     
-    output$table_output <- renderTable({
+    output$table_output <- renderDataTable({
         games()
     })
 }

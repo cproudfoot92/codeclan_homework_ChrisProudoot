@@ -3,7 +3,7 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-Part 1
+
 
 ```{r}
 stock_prices <- c(23, 27, 23, 21, 34, 24, 25, 30, 37, 30)
@@ -33,9 +33,6 @@ stock_list <- list(stock_p = stock_prices, dow = day_of_week, stock_d = stock_da
 stock_list
 ```
 
-Part 2
-
-Question 1
 
 ```{r}
 stock_prices[c(4, 5, 6)]
@@ -45,7 +42,6 @@ stock_prices[c(4, 5, 6)]
 stock_prices[stock_prices > 30]
 ```
 
-Question 2
 
 ```{r}
 stock_data$day_of_week
@@ -69,13 +65,11 @@ stock_data[3, ]
 stock_data[3, 1]
 ```
 
-Question 4
 
 ```{r}
 stock_list$stock_d
 ```
 
-Extension
 
 ```{r}
 install.packages("tidyquant")
