@@ -1,0 +1,44 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(modelr)
+library(broom)
+library(ggfortify)
+```
+
+```{r}
+project <- read_csv("data/project_management.csv")
+```
+
+```{r}
+project %>%
+  ggplot() +
+  aes(x = estimated_length, y = actual_length) +
+  geom_point() +
+  geom_text(aes(label = 1:nrow(project)))
+```
+
+Point 5 looks to be an outlier and I believe this point would be non-influential.
+
+```{r}
+model <- lm(actual_length ~ estimated_length, data = project)
+```
+
+```{r}
+autoplot(model)
+```
+
+
+```{r}
+autoplot(model, which = 4)
+```
+
+```{r}
+
+```
+
