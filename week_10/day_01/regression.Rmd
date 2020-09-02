@@ -23,7 +23,7 @@ project %>%
   geom_text(aes(label = 1:nrow(project)))
 ```
 
-Point 5 looks to be an outlier and I believe this point would be non-influential.
+Point 5 and 18 looks to be outliers and I believe 5 would be influential and 18 would be non-influential.
 
 ```{r}
 model <- lm(actual_length ~ estimated_length, data = project)
@@ -39,6 +39,47 @@ autoplot(model, which = 4)
 ```
 
 ```{r}
+plot(model)
+```
 
+```{r}
+omit_18 <- project %>%
+  slice(-18)
+
+omit_18_model <- lm(actual_length ~ estimated_length, data = omit_18)
+omit_18_model
+```
+
+```{r}
+library(modelr)
+
+project <- project %>%
+  add_predictions(model, var = "full_model_pred") %>%
+  add_predictions(omit_18_model, var = "omit_18_model_pred")
+
+project %>%
+  ggplot(aes(x = estimated_length)) +
+  geom_point(aes(y = actual_length)) +
+  geom_line(aes(y = full_model_pred), col = "red") +
+  geom_line(aes(y = omit_18_model_pred), col = "blue")
+```
+
+```{r}
+omit_5 <- project %>%
+  slice(-5)
+
+omit_5_model <- lm(actual_length ~ estimated_length, data = omit_5)
+omit_5_model
+```
+
+```{r}
+project <- project %>%
+  add_predictions(omit_5_model, var = "omit_5_model_pred")
+
+project %>%
+  ggplot(aes(x = estimated_length)) +
+  geom_point(aes(y = actual_length)) +
+  geom_line(aes(y = full_model_pred), col = "red") +
+  geom_line(aes(y = omit_5_model_pred), col = "blue")
 ```
 

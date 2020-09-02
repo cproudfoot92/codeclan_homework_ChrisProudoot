@@ -1,0 +1,89 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(GGally)
+library(fastDummies)
+```
+
+```{r}
+diamonds <- read_csv("diamonds.csv")
+```
+
+```{r}
+ggpairs(diamonds, columns = c("carat", "x", "y", "z"))
+```
+
+All the points have a very high correlation because any diamond has all these things
+
+```{r}
+diamonds <- diamonds %>%
+  select(-c("x", "y", "z"))
+```
+
+```{r}
+ggpairs(diamonds)
+```
+
+```{r}
+dimonds %>%
+  ggplot(aes(x = price, y = carat)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+unique(diamonds$cut)
+unique(diamonds$color)
+unique(diamonds$clarity)
+```
+
+dummy_cols will return 18 dummy variables
+
+```{r}
+diamonds %>%
+dummy_cols(select_columns = c("cut", "color", "clarity"), remove_first_dummy = TRUE,
+           remove_selected_columns = TRUE)
+```
+
+```{r}
+model <- lm(price ~ carat, data = diamonds)
+
+summary(model)
+```
+
+```{r}
+par(mfrow = c(2,2))
+plot(model)
+```
+
+```{r}
+model2 <- lm(price ~ log(carat), data = diamonds)
+
+summary(model2)
+```
+This result is worse than before.
+
+```{r}
+model3 <- lm(log(price) ~ log(carat) + cut, data = diamonds)
+
+summary(model3)
+```
+
+```{r}
+model4 <- lm(log(price) ~ log(carat) + color, data = diamonds)
+
+summary(model4)
+```
+
+```{r}
+model5 <- lm(log(price) ~ log(carat) + clarity, data = diamonds)
+
+summary(model5)
+```
+clarity is the best categorical predictor as it has the highest r^2 value.
+
+zxi
