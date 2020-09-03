@@ -1,0 +1,52 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(modelr)
+library(GGally)
+```
+
+```{r}
+king <- read_csv("data/kc_house_data.csv")
+glimpse(king)
+summary(king)
+```
+
+```{r}
+king_trim <- king %>%
+  mutate(waterfront = ifelse(waterfront == 1, TRUE, FALSE),
+         renovated = ifelse(yr_renovated == 0, FALSE, TRUE),
+         condition = as.character(recode(condition,
+                                         "1" = "Poor",
+                                         "2" = "Fair",
+                                         "3" = "Average",
+                                         "4" = "Good", 
+                                         "5" = "Very Good")),
+         grade = as.character(grade)) %>%
+  select(-c("date", "id", "sqft_living15", "sqft_lot15", "zipcode", "yr_renovated")) 
+```
+
+```{r}
+alias_model <- lm(price ~ ., data = king_trim)
+alias(alias_model)
+```
+
+```{r}
+king_trim <- king_trim %>%
+  select(-c("sqft_lot", "sqft_above"))
+```
+
+```{r}
+king_trim %>%
+  ggpairs()
+```
+
+
+```{r}
+mod1a <- lm(price)
+summary()
+```
+
