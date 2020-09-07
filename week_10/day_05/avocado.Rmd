@@ -1,0 +1,231 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(lubridate)
+library(zoo)
+library(GGally)
+library(modelr)
+```
+
+
+```{r}
+avocado <- read_csv("data/avocado.csv")
+```
+
+```{r}
+glimpse(avocado)
+summary(avocado)
+```
+
+```{r}
+unique(avocado$region)
+```
+
+```{r}
+avocado_trim <- avocado %>%
+  #create a variable for seasons
+  mutate(seasons = factor(
+    format(as.yearqtr(as.yearmon(Date, "%m/%d/%Y") + 1/12), "%q"),
+    levels = 1:4, 
+    labels = c("winter", "spring", "summer", "fall"))) %>%
+  mutate(type = as_factor(type),
+         region = as_factor(region)) %>%
+  #remove unwanted variables
+  select(-c("X1", "Date", "Total Bags", "region")) %>%
+  clean_names()
+```
+
+```{r}
+alias(average_price ~ ., data = avocado_trim)
+```
+
+```{r}
+avo_numeric <- avocado_trim %>%
+  select_if(is.numeric)
+
+avo_nonumeric <- avocado_trim %>%
+  select_if(function(x) !is.numeric(x))
+
+avo_nonumeric$average_price <-avocado_trim$average_price
+```
+
+
+```{r}
+ggpairs(avo_numeric)
+```
+I identified x4046 as having the highest numeric correlation, so I will investigate that first
+```{r}
+ggpairs(avo_nonumeric)
+```
+I will also want to investigate type as there is a difference in distribution
+
+```{r}
+mod1a <- lm(average_price ~ x4046, data = avocado_trim)
+summary(mod1a)
+```
+
+```{r}
+mod1b <- lm(average_price ~ total_volume, data = avocado_trim)
+summary(mod1b)
+```
+
+```{r}
+mod1c <- lm(average_price ~ type, data = avocado_trim)
+summary(mod1c)
+```
+Type seems to be the most promising 
+
+```{r}
+par(mfrow = c(2,2))
+plot(mod1c)
+```
+
+```{r}
+avo_resid <- avocado_trim %>%
+  add_residuals(mod1c) %>%
+  select(-c("average_price", "type"))
+
+avo_resid_numeric <- avo_resid %>%
+  select_if(is.numeric)
+
+avo_resid_nonumeric <- avo_resid %>%
+  select_if(function(x) !is.numeric(x))
+
+avo_resid_nonumeric$resid <- avo_resid$resid
+```
+
+```{r}
+ggpairs(avo_resid_numeric)
+```
+
+```{r}
+ggpairs(avo_resid_nonumeric)
+```
+
+Year has the highest correlation. I will also have a look at x4046 and seasons
+
+```{r}
+mod2a <- lm(average_price ~ type + year, data = avocado_trim)
+summary(mod2a)
+  
+```
+
+```{r}
+mod2b <- lm(average_price ~ type + x4046, data = avocado_trim)
+summary(mod2b)
+```
+
+```{r}
+mod2c <- lm(average_price ~ type + seasons, data = avocado_trim)
+summary(mod2c)
+```
+Seasons has a higher r^2 so I'll continue using mod2c
+
+```{r}
+avo_resid <- avocado_trim %>%
+  add_residuals(mod2c) %>%
+  select(-c("average_price", "type", "seasons"))
+
+```
+
+```{r}
+ggpairs(avo_resid)
+```
+
+```{r}
+par(mfrow = c(2,2))
+plot(mod2c)
+```
+
+```{r}
+mod3a <- lm(average_price ~ type + seasons + year, data = avocado_trim)
+summary(mod3a)
+```
+
+```{r}
+mod3b <- lm(average_price ~ type + seasons + x4046, data = avocado_trim)
+summary(mod3b)
+```
+
+```{r}
+par(mfrow = c(2,2))
+plot(mod3a)
+```
+
+```{r}
+avo_resid <- avocado_trim %>%
+  add_residuals(mod3a) %>%
+  select(-c("average_price", "type", "seasons", "year"))
+ggpairs(avo_resid)
+```
+
+```{r}
+mod4a <- lm(average_price ~ type + seasons + year + x4046, data = avocado_trim)
+summary(mod4a)
+```
+
+```{r}
+mod4b <- lm(average_price ~ type + seasons + year + large_bags, data = avocado_trim)
+summary(mod4b)
+
+```
+
+```{r}
+mod4c <- lm(average_price ~ type + seasons + year + total_volume, data = avocado_trim)
+summary(mod4c)
+```
+
+```{r}
+par(mfrow = c(2,2))
+plot(mod4a)
+```
+
+```{r}
+mod5a <- lm(average_price ~ type + seasons + year + x4046 + type:seasons, data = avocado_trim)
+summary(mod5a)
+```
+
+```{r}
+mod5b <- lm(average_price ~ type + seasons + year + x4046 + type:year, data = avocado_trim)
+summary(mod5b)
+```
+
+```{r}
+mod5c <- lm(average_price ~ type + seasons + year + x4046 + type:x4046, data = avocado_trim)
+summary(mod5c)
+```
+
+```{r}
+mod5d <- lm(average_price ~ type + seasons + year + x4046 + seasons:year, data = avocado_trim)
+summary(mod5d)
+```
+this model had the highest r^2 but year was insignificant 
+```{r}
+mod5e <- lm(average_price ~ type + seasons + year + x4046 + seasons:x4046, data = avocado_trim)
+summary(mod5e)
+```
+```{r}
+mod5f <- lm(average_price ~ type + seasons + year + x4046 + year:x4046, data = avocado_trim)
+summary(mod5f)
+```
+
+```{r}
+par(mfrow = c(2,2))
+plot(mod5b)
+```
+
+```{r}
+library(relaimpo)
+
+```
+
+```{r}
+calc.relimp(mod4a, type = "lmg", rela = TRUE)
+```
+I had to use previous model as the ones with interactions weren't working.
+Here you can see type has the greatest importance with almost 80% of r^2

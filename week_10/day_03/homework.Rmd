@@ -25,7 +25,7 @@ king_trim <- king %>%
                                          "3" = "Average",
                                          "4" = "Good", 
                                          "5" = "Very Good")),
-         grade = as.character(grade)) %>%
+         grade = as.factor(grade)) %>%
   select(-c("date", "id", "sqft_living15", "sqft_lot15", "zipcode", "yr_renovated")) 
 ```
 
@@ -36,17 +36,33 @@ alias(alias_model)
 
 ```{r}
 king_trim <- king_trim %>%
-  select(-c("sqft_lot", "sqft_above"))
+  select(-"sqft_living")
 ```
 
 ```{r}
-king_trim %>%
-  ggpairs()
+houses_tidy_numeric <- king_trim %>%
+  select_if(is.numeric)
+
+houses_tidy_nonnumeric <- king_trim %>%
+  select_if(function(x) !is.numeric(x))
+
+houses_tidy_nonnumeric$price <- king_trim$price
+
+ggpairs(houses_tidy_numeric)
+```
+
+```{r}
+ggpairs(houses_tidy_nonnumeric)
 ```
 
 
 ```{r}
-mod1a <- lm(price)
-summary()
+mod1a <- lm(price ~ grade, data = king_trim)
+summary(mod1a)
+```
+
+```{r}
+mod1b <- lm(price ~ waterfront, data = king_trim)
+summary(mod1b)
 ```
 
