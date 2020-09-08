@@ -1,0 +1,59 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(cluster)
+library(factoextra)
+library(dendextend)
+```
+
+```{r}
+computers <- janitor::clean_names(read_csv("data/computers.csv"))
+```
+
+```{r}
+summary(computers)
+```
+
+```{r}
+computers <- computers %>%
+  select(hd, ram) 
+```
+
+
+
+```{r}
+computers %>%
+  ggplot(aes(x = hd, y = ram)) +
+  geom_point()
+```
+
+Here we can see that there is some separation and grouping which will make it suitable for clustering.
+
+```{r}
+computers_scale <- computers %>%
+  mutate_all(scale)
+
+```
+hierarchical clustering would be unsuitable here because there are too many data points.
+
+```{r}
+fviz_nbclust(computers_scale, kmeans, method = "wss", nstart = 25)
+```
+The elbow in the data sits at k = 2
+
+```{r}
+fviz_nbclust(computers_scale, kmeans, method = "silhouette", nstart = 25)
+```
+
+```{r}
+fviz_nbclust(computers_scale, kmeans, method = "gap_stat", nstart = 25, k.max = 10)
+```
+
+These three methods for choosing the number of cluster have given back three different results. this tells us that the data is not suitable for k-means clustering
+
+
+
