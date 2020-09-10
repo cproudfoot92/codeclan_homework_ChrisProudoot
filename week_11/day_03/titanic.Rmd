@@ -1,0 +1,128 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(rpart)
+library(rpart.plot)
+library(tidyverse)
+library(modelr)
+library(janitor)
+library(yardstick)
+```
+
+
+```{r}
+titanic_set <- read_csv('data/titanic_decision_tree_data.csv')
+
+shuffle_index <- sample(1:nrow(titanic_set))
+
+# shuffle the data so class order isn't in order - need this for training/testing split later on 
+titanic_set <- titanic_set[shuffle_index, ]
+```
+
+```{r}
+titanic_clean <- titanic_set %>%
+  mutate(sex = as.factor(sex),
+         survived = factor(survived, levels = c(0, 1), labels = c("no", "yes")),
+         class = factor(pclass, levels = c(3, 2, 1), labels = c("lower", "middle", "upper")),
+         embarked = as.factor(embarked),
+         age_status = as.factor(ifelse(age <= 16, "child", "adult"))) %>%
+  drop_na(survived, age, age_status) %>%
+  select(-c("X1", "passenger_id", "name", "ticket", "fare", "cabin", "pclass", "age"))
+```
+
+```{r}
+titanic_clean %>%
+  ggplot() +
+  aes(x = sex, fill = survived) +
+  geom_bar(position = "dodge")
+```
+
+```{r}
+titanic_clean %>%
+  ggplot() +
+  aes(x = age_status, fill = survived) +
+  geom_bar(position = "dodge")
+```
+
+```{r}
+titanic_clean %>%
+  ggplot() +
+  aes(x = class, fill = survived) +
+  geom_bar(position = "dodge")
+```
+
+```{r}
+titanic_clean %>%
+  ggplot() +
+  aes(x = sib_sp, fill = survived) +
+  geom_bar(position = "dodge")
+```
+
+```{r}
+titanic_clean %>%
+  ggplot() +
+  aes(x = parch, fill = survived) +
+  geom_bar(position = "dodge")
+```
+
+```{r}
+titanic_clean %>%
+  ggplot() +
+  aes(x = embarked, fill = survived) +
+  geom_bar(position = "dodge")
+```
+
+So after visualising the data it identified sex and class to be the most useful for predictions. Also, you do not want to be an only child in the care of a nanny on the titanic(just saying)
+
+```{r}
+n_data <- nrow(titanic_clean)
+
+test_index <- sample(1:n_data, size = n_data*0.2)
+
+titanic_test <- slice(titanic_clean, test_index)
+
+titanic_train <- slice(titanic_clean, -test_index)
+```
+
+I think an 80/20 is a good split because it give you plenty on data to train the model on and leave you a little to test it.
+
+```{r}
+tabyl(titanic_test$survived)
+tabyl(titanic_train$survived)
+```
+Here you can see the model if pretty balanced with it only being out 1 percent. ish
+
+```{r}
+titanic_fit <- rpart(survived ~ .,
+                     data = titanic_clean,
+                     method = "class")
+```
+
+```{r}
+rpart.plot(titanic_fit, yesno = 2)
+```
+
+As predicted sex is an important predictor, just being male gives 0.21 chance of death. Next class has a big impacted, especially if you're in the lower class. If you're going on a cruse remember and leave your brother/sister at home, people with siblings were more likely to die. And finally if you embarked anywhere other than Cherbourg then it doesn't look good for you. So if you're an upper class female then the odds are in your favour, if you're a man not so good but if you're a woman who embarked in Queenstown or Southampton into a lower class cabin with you're siblings then.. you've had it.
+
+```{r}
+titanic_test_pred <- titanic_test %>%
+  add_predictions(titanic_fit, type = "class")
+```
+
+```{r}
+titanic_test_pred %>%
+  conf_mat(truth = survived, estimate = pred)
+```
+Here the false negatives are really small at 4 but the false positive are quite high at 21
+
+```{r}
+accuracy_survivers <- titanic_test_pred %>%
+  accuracy(truth = survived, estimate = pred)
+
+accuracy_survivers
+```
+
+I would say this model worked well with an accuracy of 0.82
