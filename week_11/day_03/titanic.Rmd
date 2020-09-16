@@ -125,4 +125,4 @@ accuracy_survivers <- titanic_test_pred %>%
 accuracy_survivers
 ```
 
-I would say this model worked well with an accuracy of 0.82
+I would say overall this model worked well with an accuracy of 0.82
